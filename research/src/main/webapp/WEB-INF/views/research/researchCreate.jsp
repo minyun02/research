@@ -35,17 +35,19 @@ doGoTab = function(thisObject, tab) {
 		$(document).on('click','#plus', function(){
 			var num = parseInt($("#numOfQs").text());
 			var text = '<div class="research '+(num+1)+'">';
-			text += '<p>'+(num+1)+'.&nbsp;&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="1. 위생불량 납품단절 편함" /></p>';
+			text += '<p>'+(num+1)+'.&nbsp;&nbsp;<input type="text" id="aa" name="voList['+(num)+'].surq_title" class="inp"  title="1. 위생불량 납품단절 편함" /></p>';
             text += '<ul>';
-            text += '<li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>선택사유 <input type="text" id="aa" name="aa" class="inp" style="width:650px;" /></li>';
+            text += '<li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title1" class="inp"  title="매우그렇다" /></li>';
+            text += '<li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title2" class="inp"  title="매우그렇다" /></li>';
+            text += '<li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title3" class="inp"  title="매우그렇다" /></li>';
+            text += '<li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title4"class="inp"  title="매우그렇다" /></li>';
+            text += '<li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title5" class="inp"  title="매우그렇다" /></li>';
+            text += '<li>선택사유 <input type="text" id="aa" name="voList['+(num)+'].suri_reason" class="inp" style="width:650px;" /></li>';
             text += '</ul></div>';
 			$("#questions").append(text);
 			$("#numOfQs").text(num+1);
+			console.log(typeof num)
+			$("#que_cnt").val(parseInt(num+1));
 		})
 		
 		// 문항수 줄이기
@@ -57,6 +59,7 @@ doGoTab = function(thisObject, tab) {
 			}else{
 				$(obj).remove();
 				$("#numOfQs").text(num-1);
+				$("#que_cnt").val(parseInt(num-1));
 			}
 		});
 		
@@ -64,7 +67,10 @@ doGoTab = function(thisObject, tab) {
 		$(document).on('click','.pre_r', function(){
 			$("#createForm").submit();
 		})
-	});
+		
+		//달력
+		$("#test").datepicker();
+	});s
 </script>
 </head>
 <body>
@@ -79,7 +85,7 @@ doGoTab = function(thisObject, tab) {
   
   <!-- header-->
   <div id="header">
-    <h1><img src="${pageContext.request.contextPath}/images/header/common/logo.gif" alt="서울학교급식포털" /></h1>
+    <h1><a href="researchList"><img src="${pageContext.request.contextPath}/images/header/common/logo.gif" alt="서울학교급식포털" /></a></h1>
     <div class="topmenu">
       <ul>
         <li class="bn"><a href="#">HOME</a></li>
@@ -231,13 +237,13 @@ doGoTab = function(thisObject, tab) {
 	            <tbody>
 	              <tr>
 	                <th>제목</th>
-	                <td colspan="5" class="tl"><input type="text" id="aa" name="aa" class="inp" /></td>
+	                <td colspan="5" class="tl"><input type="text" id="aa" name="sur_title" class="inp" /></td>
 	                </tr>
 	              <tr>
 	                <th>시작일</th>
-	                <td class="tl"><input type="text" id="aa" name="aa" class="inp" style="width:100px;" /> <a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/ico_data.gif" alt="달력" /></a></td>
+	                <td class="tl"><input type="date" id="aa" name="sur_sat_date" class="inp" style="width:130px;" /></td>
 	                <th>종료일</th>
-	                <td class="tl"><input type="text" id="aa" name="aa" class="inp" style="width:100px;" /> <a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/ico_data.gif" alt="달력" /></a></td>
+	                <td class="tl"><input type="date" id="aa" name="sur_end_date" class="inp" style="width:130px;" /></td>
 	                <th>결과확인</th>
 	                <td class="tl"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></td>
 	              </tr>
@@ -245,21 +251,21 @@ doGoTab = function(thisObject, tab) {
 	                <th>문항수</th>
 	                <td colspan="5" class="tl">
 	                	<button id="minus" type="button">-</button>
-	                	<span id="numOfQs" style="margin: 0 10px">1</span>
+	                	<span id="numOfQs" style="margin: 0 10px">1</span><input id="que_cnt" type="hidden" name="que_cnt" value="1"/>
 	                	<button id="plus" type="button">+</button>
 	                </td>
 	                </tr>
 	              <tr>
 	               <td colspan="6" class="tl" id="questions">
 	               	   <div class="research">
-	                       <p>1.&nbsp;&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="1. 위생불량 납품단절 편함" /></p>
+	                       <p>1.&nbsp;&nbsp;<input type="text" id="aa" name="voList[0].surq_title" class="inp"  title="1. 위생불량 납품단절 편함" /></p>
 	                        <ul>
-	                        <li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="aa" class="inp" title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="aa" class="inp"  title="매우그렇다" /></li>
-	                        <li>선택사유 <input type="text" id="aa" name="aa" class="inp" style="width:650px;" /> </li>
+	                        <li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList[0].suri_title1" class="inp"  title="매우그렇다" /></li>
+	                        <li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList[0].suri_title2" class="inp"  title="매우그렇다" /></li>
+	                        <li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList[0].suri_title3" class="inp"  title="매우그렇다" /></li>
+	                        <li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList[0].suri_title4" class="inp" title="매우그렇다" /></li>
+	                        <li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList[0].suri_title5" class="inp"  title="매우그렇다" /></li>
+	                        <li>선택사유 <input type="text" id="aa" name="voList[0].suri_reason" class="inp" style="width:650px;" /> </li>
 	                        </ul>
 						</div>
 	               </td>
@@ -279,7 +285,7 @@ doGoTab = function(thisObject, tab) {
 	
 	          <span class="wte_l"><a href="researchList" class="wte_r">목록</a></span>
 	          <span class="per_l"><a href="#" onclick="return false;" class="pre_r">등록</a></span>
-	          <span class="wte_l"><a href="#" class="wte_r">취소</a></span>
+	          <span class="wte_l"><a href="#" onclick="return false;" class="wte_r">취소</a></span>
 	
 	          </span> 
 	          <!-- //btn--> 

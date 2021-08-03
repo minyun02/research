@@ -2,5 +2,22 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.research.myapp.dao.ResearchDAO">
-
+	<insert id="researchInsert" parameterType="ResearchVO">
+		<selectKey keyProperty="sur_seq" resultType="int" order="AFTER">
+			select sur_seq.currval as sur_seq from dual
+		</selectKey>
+		insert into tb_06_rs(sur_seq, SUR_TITLE, QUE_CNT, SUR_SAT_DATE, SUR_END_DATE, WRITER, REG_NAME, REG_DATE ,UDT_NAME, UDT_DATE)
+		values(sur_seq.nextval, #{sur_title}, ${que_cnt}, #{sur_sat_date}, #{sur_end_date}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
+	</insert>
+	<insert id="researchQInsert" parameterType="ResearchVO">
+		<selectKey keyProperty="surq_seq" resultType="int" order="AFTER">
+			select surq_seq.currval as surq_seq from dual
+		</selectKey>
+		insert into tb_06_rsq(SURQ_SEQ, SUR_SEQ, SURQ_TITLE, WRITER, REG_NAME, REG_DATE, UDT_NAME, UDT_DATE)
+		values(surq_seq.nextval, ${sur_seq}, #{surq_title}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
+	</insert>
+	<insert id="researchInfoInsert" parameterType="ResearchVO">
+		insert into tb_06_rsi(SURI_SEQ, SUR_SEQ, SURQ_SEQ, SURI_TITLE1, SURI_TITLE2, SURI_TITLE3, SURI_TITLE4, SURI_TITLE5, SURI_REASON, WRITER, REG_NAME, REG_DATE, UDT_NAME, UDT_DATE)
+		values(suri_seq.nextval, ${sur_seq}, ${surq_seq}, #{suri_title1}, #{suri_title2}, #{suri_title3}, #{suri_title4}, #{suri_title5}, #{suri_reason}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
+	</insert>
 </mapper>
