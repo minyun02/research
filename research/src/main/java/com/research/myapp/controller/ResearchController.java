@@ -26,6 +26,7 @@ public class ResearchController {
 	@RequestMapping("/researchList")
 	public ModelAndView researchList() {
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", rService.getList());
 		mav.setViewName("/research/researchList");
 		return mav;
 	}

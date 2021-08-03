@@ -1,5 +1,7 @@
 package com.research.myapp.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -29,5 +31,11 @@ public class ResearchServiceImp implements ResearchService {
 	public int researchInfoInsert(ResearchVO vo) {
 		// 설문조사 문항 insert
 		return dao.researchInfoInsert(vo);
+	}
+
+	@Override
+	public List<ResearchVO> getList() {
+		// 목록 가져오기
+		return dao.getList();
 	}
 }

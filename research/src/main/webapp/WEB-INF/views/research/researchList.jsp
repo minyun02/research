@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 <head>
@@ -116,7 +117,7 @@
     setEvtGnb();
   }
 //-->
-</SCRIPT>
+</script>
 
 <script type="text/javascript">
 initPage = function() {
@@ -311,51 +312,17 @@ doGoTab = function(thisObject, tab) {
                 <th>첨부</th>
                 <th>결과확인</th>
               </tr>
-              <tr>
-                <td>10</td>
-                <td class="tl"><a href="researchView">내용입니다.</a></td>
-                <td>2013-01-02</td>                
-                <td>2013-01-02</td>
-                <td>완료</td>
-                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
-                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
-              </tr> 
-              <tr>
-                <td>10</td>
-                <td class="tl">내용입니다.</td>
-                <td>2013-01-02</td>                
-                <td>2013-01-02</td>
-                <td>완료</td>
-                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
-                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td class="tl">내용입니다.</td>
-                <td>2013-01-02</td>                
-                <td>2013-01-02</td>
-                <td>완료</td>
-                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
-                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td class="tl">내용입니다.</td>
-                <td>2013-01-02</td>                
-                <td>2013-01-02</td>
-                <td>완료</td>
-                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
-                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td class="tl">내용입니다.</td>
-                <td>2013-01-02</td>                
-                <td>2013-01-02</td>
-                <td>완료</td>
-                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
-                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
-              </tr>        
+              <c:foreach var="vo" items="${list}">
+	              <tr>
+	                <td>10</td>
+	                <td class="tl"><a href="researchView">${vo.sur_title}</a></td>
+	                <td>${vo.sur_sat_date}</td>                
+	                <td>${vo.sur_end_date }</td>
+	                <td>완료</td>
+	                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
+	                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
+	              </tr>
+              </c:foreach> 
             </tbody>
           </table>
           

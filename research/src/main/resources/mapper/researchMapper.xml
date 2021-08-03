@@ -20,4 +20,13 @@
 		insert into tb_06_rsi(SURI_SEQ, SUR_SEQ, SURQ_SEQ, SURI_TITLE1, SURI_TITLE2, SURI_TITLE3, SURI_TITLE4, SURI_TITLE5, SURI_REASON, WRITER, REG_NAME, REG_DATE, UDT_NAME, UDT_DATE)
 		values(suri_seq.nextval, ${sur_seq}, ${surq_seq}, #{suri_title1}, #{suri_title2}, #{suri_title3}, #{suri_title4}, #{suri_title5}, #{suri_reason}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
 	</insert>
+	<select id="getList" resultType="ResearchVO">
+		select * from
+		    (select * from
+		        (select * from
+		            (select sur_seq, sur_title, sur_sat_date, sur_end_date from tb_06_rs order by sur_seq desc)
+		        )
+		    where <![CDATA[rownum <=]]> 5 order by sur_seq asc)
+		where <![CDATA[rownum <=]]> 5 order by sur_seq desc
+	</select>
 </mapper>
