@@ -37,6 +37,14 @@ doGoTab = function(thisObject, tab) {
 			$("#responseForm").submit();
 		});
 	});
+	
+	function openPopup(){
+		var test = $("#bno").val();
+		var url = "researchPopup?sur_seq="+test;
+		var name = "결과보기";
+		var option = "width = 500, height = 500, top = 200, left = 800";
+		window.open(url, name, option);
+	}
 </script>
 </head>
 <body>
@@ -221,7 +229,7 @@ doGoTab = function(thisObject, tab) {
 	               <td colspan="6" class="tl">
 						<c:forEach var="q" items="${qs}" varStatus="i">
 		               		<div class="research">
-		                       <input type="hidden" name="voList[${i.index}].sur_seq" value="${q.sur_seq}"/>
+		                       <input id="bno" type="hidden" name="voList[${i.index}].sur_seq" value="${q.sur_seq}"/>
 		                       <input type="hidden" name="voList[${i.index}].surq_seq" value="${q.surq_seq}"/>
 		                       <input type="hidden" name="voList[${i.index}].suri_seq" value="${q.suri_seq}"/>
 		                       <input type="hidden" name="voList[${i.index}].surq_title" value="${q.surq_title}"/>
@@ -248,7 +256,6 @@ doGoTab = function(thisObject, tab) {
 	              </tr>
 	            </tbody>
 	          </table>
-	          
 	          <p class="pt40"></p>
 	          <!-- btn--> 
 	          <span class="bbs_btn"> 
@@ -257,7 +264,7 @@ doGoTab = function(thisObject, tab) {
 	          <span class="wte_l"><a href="#" class="wte_r">수정</a></span>
 	          <span class="wte_l"><a href="#" class="wte_r">삭제</a></span>
 	          <span class="per_l"><a href="#" id="responseSubmit" onclick="return false;" class="pre_r">참여하기</a></span>
-	          <span class="per_l"><a href="#" class="pre_r">결과보기</a></span>
+	          <span class="per_l"><a href="#" onclick="openPopup(); return false;" class="pre_r">결과보기</a></span>
 	          <span class="wte_l"><a href="#" class="wte_r">사유전체보기</a></span>
 				
 	          </span> 
@@ -266,7 +273,6 @@ doGoTab = function(thisObject, tab) {
 	        </div>
 	      </div>
       </form>
-      
       <p class="bottom_bg"></p>
     </div>
   </div>

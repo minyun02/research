@@ -69,24 +69,20 @@ public class ResearchController {
 						System.out.println("설문조사 문제 등록 실패");
 						mav.setViewName("redirect:researchCreate");
 						tm.rollback(status);
-						System.out.println("1111");
 					}
 				}//for
 				if(result3 > 0) {
 					mav.setViewName("redirect:researchList");
 					tm.commit(status);
-					System.out.println("2222222");
 				}else {
 					mav.setViewName("redirect:/research/researchCreate");
 					System.out.println("설문조사 문항 등록 실패");
 					tm.rollback(status);
-					System.out.println("333333");
 				}
 			}else {
 				System.out.println("설문조사 등록 실패");
 				mav.setViewName("researchCreate");
 				tm.rollback(status);
-				System.out.println("44444");
 			}
 		}catch(Exception e) {
 			mav.setViewName("researchCreate");
@@ -123,6 +119,14 @@ public class ResearchController {
 			mav.addObject("sur_seq", vo.getVoList().get(0).getSur_seq());
 			mav.setViewName("/research/researchView");
 		}
+		return mav;
+	}
+	
+	@RequestMapping("/researchPopup")
+	public ModelAndView researchPopup(int sur_seq) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("/research/researchPopup");
 		return mav;
 	}
 }

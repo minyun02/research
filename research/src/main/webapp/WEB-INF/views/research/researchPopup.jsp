@@ -18,7 +18,22 @@
     <div class="pop_list">
     	<h2>올해 가장 행복했던일 <span class="rearch_end">투표종료</span></h2>
         <div class="rearch_box">
-        	그래프 내용
+        	<div style="float:left;">
+        		① 그래프 내용
+        		<div style="border:1px solid red; width:50%; height: 10px;"></div>
+        	</div>
+        	<div>
+        		① 그래프 내용
+        	</div>
+        	<div>
+        		① 그래프 내용
+        	</div>
+        	<div>
+        		① 그래프 내용
+        	</div>
+        	<div>
+        		① 그래프 내용
+        	</div>
         </div>
         
     </div>
