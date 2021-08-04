@@ -38,4 +38,22 @@ public class ResearchServiceImp implements ResearchService {
 		// 목록 가져오기
 		return dao.getList();
 	}
+
+	@Override
+	public ResearchVO getRecord(int sur_seq) {
+		// 설문조사 view
+		return dao.getRecord(sur_seq);
+	}
+
+	@Override
+	public List<ResearchVO> getQuestions(int sur_seq) {
+		// 설문조사 문항 가져오기
+		return dao.getQuestions(sur_seq);
+	}
+
+	@Override
+	public int responseInsert(ResearchVO vo) {
+		// 답변 등록
+		return dao.responseInsert(vo);
+	}
 }

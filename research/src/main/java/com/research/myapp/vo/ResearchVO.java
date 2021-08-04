@@ -31,6 +31,11 @@ public class ResearchVO {
 	private String suri_title5;
 	private String suri_reason;
 	
+	//////////////////////////////////////////설문조사 답변
+	private int surr_seq;
+	private int suri_num;
+	private String description;
+	
 	private List<ResearchVO> voList;
 	
 	public int getSur_seq() {
@@ -158,5 +163,23 @@ public class ResearchVO {
 	}
 	public void setVoList(List<ResearchVO> voList) {
 		this.voList = voList;
+	}
+	public int getSurr_seq() {
+		return surr_seq;
+	}
+	public void setSurr_seq(int surr_seq) {
+		this.surr_seq = surr_seq;
+	}
+	public int getSuri_num() {
+		return suri_num;
+	}
+	public void setSuri_num(int suri_num) {
+		this.suri_num = suri_num;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

@@ -9,4 +9,7 @@ public interface ResearchService {
 	public int researchQInsert(ResearchVO vo);
 	public int researchInfoInsert(ResearchVO vo);
 	public List<ResearchVO> getList();
+	public ResearchVO getRecord(int sur_seq);
+	public List<ResearchVO> getQuestions(int sur_seq);
+	public int responseInsert(ResearchVO vo);
 }

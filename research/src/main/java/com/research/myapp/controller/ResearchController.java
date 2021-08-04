@@ -9,6 +9,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.research.myapp.service.ResearchService;
@@ -49,9 +50,9 @@ public class ResearchController {
 		try {
 			int result3 = 0; //문항 등록 체크용
 			//설문조사 등록
-			vo.setWriter("관리자");
-			vo.setReg_name("관리지");
-			vo.setUdt_name("관리자");
+			vo.setWriter("admin");
+			vo.setReg_name("admin");
+			vo.setUdt_name("admin");
 			int result1 = rService.researchInsert(vo);
 			if(result1>0) {
 				//설문 문제 등록(여러개일 수 있으니까 반복문)
@@ -66,22 +67,26 @@ public class ResearchController {
 						result3 = rService.researchInfoInsert(vo.getVoList().get(i));
 					}else { //설문 문제 등록 실패.
 						System.out.println("설문조사 문제 등록 실패");
-						mav.setViewName("redirect:/research/researchCreate");
+						mav.setViewName("redirect:researchCreate");
 						tm.rollback(status);
+						System.out.println("1111");
 					}
 				}//for
 				if(result3 > 0) {
-					mav.setViewName("/research/researchList");
+					mav.setViewName("redirect:researchList");
 					tm.commit(status);
+					System.out.println("2222222");
 				}else {
 					mav.setViewName("redirect:/research/researchCreate");
 					System.out.println("설문조사 문항 등록 실패");
 					tm.rollback(status);
+					System.out.println("333333");
 				}
 			}else {
 				System.out.println("설문조사 등록 실패");
 				mav.setViewName("researchCreate");
 				tm.rollback(status);
+				System.out.println("44444");
 			}
 		}catch(Exception e) {
 			mav.setViewName("researchCreate");
@@ -91,9 +96,33 @@ public class ResearchController {
 		return mav;
 	}
 	@RequestMapping("/researchView")
-	public ModelAndView researchView() {
+	public ModelAndView researchView(int sur_seq) {
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("vo", rService.getRecord(sur_seq));
+		mav.addObject("qs", rService.getQuestions(sur_seq));
 		mav.setViewName("/research/researchView");
+		return mav;
+	}
+	
+	@RequestMapping(value="/researchResponse", method = RequestMethod.POST)
+	public ModelAndView researchResponse(ResearchVO vo) {
+		ModelAndView mav = new ModelAndView();
+		
+		int size = vo.getVoList().size();
+		int result = 0;
+		for(int i=0; i<size; i++) {
+			vo.getVoList().get(i).setReg_name("USER"+i);
+			result = rService.responseInsert(vo.getVoList().get(i));
+		}
+		if(result>0) {
+			mav.addObject("flag", true);
+			mav.addObject("sur_seq", vo.getVoList().get(0).getSur_seq());
+			mav.setViewName("redirect:researchView");
+		}else {
+			mav.addObject("flag", false);
+			mav.addObject("sur_seq", vo.getVoList().get(0).getSur_seq());
+			mav.setViewName("/research/researchView");
+		}
 		return mav;
 	}
 }

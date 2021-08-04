@@ -29,4 +29,17 @@
 		    where <![CDATA[rownum <=]]> 5 order by sur_seq asc)
 		where <![CDATA[rownum <=]]> 5 order by sur_seq desc
 	</select>
+	<select id="getRecord" resultType="ResearchVO">
+		select sur_seq, sur_title, que_cnt, sur_sat_date, sur_end_date, hits, writer from tb_06_rs where sur_seq = ${param1}
+	</select>
+	<select id="getQuestions" resultType="ResearchVO">
+		select q.sur_seq, q.surq_seq, i.suri_seq, surq_title, suri_title1, suri_title2, suri_title3, suri_title4, suri_title5, suri_reason, q.writer
+		from tb_06_rsq q join tb_06_rsi i on q.surq_seq=i.surq_seq
+		where q.sur_seq = ${param1}
+		order by q.surq_seq
+	</select>
+	<insert id="responseInsert" parameterType="ResearchVO">
+		insert into tb_06_rsr(surr_seq, SUR_SEQ, SURQ_SEQ, SURI_SEQ, SURI_NUM, DESCRIPTION, SURQ_TITLE, WRITER, REG_NAME, REG_DATE, UDT_NAME, UDT_DATE)
+		values(surr_seq.nextval, ${sur_seq}, ${surq_seq}, ${suri_seq}, ${suri_num}, #{description}, #{surq_title}, #{writer}, #{reg_name}, sysdate, #{reg_name}, sysdate)
+	</insert>
 </mapper>

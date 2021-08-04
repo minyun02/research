@@ -312,17 +312,17 @@ doGoTab = function(thisObject, tab) {
                 <th>첨부</th>
                 <th>결과확인</th>
               </tr>
-              <c:foreach var="vo" items="${list}">
+              <c:forEach var="vo" items="${list}">
 	              <tr>
 	                <td>10</td>
-	                <td class="tl"><a href="researchView">${vo.sur_title}</a></td>
+	                <td class="tl"><a href="researchView?sur_seq=${vo.sur_seq}">${vo.sur_title}</a></td>
 	                <td>${vo.sur_sat_date}</td>                
 	                <td>${vo.sur_end_date }</td>
 	                <td>완료</td>
 	                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
 	                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
 	              </tr>
-              </c:foreach> 
+	          </c:forEach>
             </tbody>
           </table>
           
