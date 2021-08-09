@@ -12,4 +12,7 @@ public interface ResearchService {
 	public ResearchVO getRecord(int sur_seq);
 	public List<ResearchVO> getQuestions(int sur_seq);
 	public int responseInsert(ResearchVO vo);
+	public List<ResearchVO> getTitleAndQs(int sur_seq);
+	public int getQuesCount(int num, int sur_seq);
+	public int getTotalCount(int surq_seq);
 }

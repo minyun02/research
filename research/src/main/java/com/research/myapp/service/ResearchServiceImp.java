@@ -56,4 +56,23 @@ public class ResearchServiceImp implements ResearchService {
 		// 답변 등록
 		return dao.responseInsert(vo);
 	}
+
+	@Override
+	public List<ResearchVO> getTitleAndQs(int sur_seq) {
+		// surq_seq + 제목 + 문항 가져오기
+		return dao.getTitleAndQs(sur_seq);
+	}
+
+	@Override
+	public int getQuesCount(int num, int sur_seq) {
+		// 문항별 답변 수 가져오기
+		return dao.getQuesCount(num, sur_seq);
+	}
+
+	@Override
+	public int getTotalCount(int surq_seq) {
+		// total 답변수
+		return dao.getTotalCount(surq_seq);
+	}
+
 }

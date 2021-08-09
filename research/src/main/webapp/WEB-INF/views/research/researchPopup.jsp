@@ -9,34 +9,86 @@
 <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+	ul, li{
+		float: left;
+	}
+</style>
 </head>
 <body>
 <!-- w100% h545px -->
 <div class="pop">
   <div class="pop_box">
   	<h1>결과보기</h1>
-    <div class="pop_list">
-    	<h2>올해 가장 행복했던일 <span class="rearch_end">투표종료</span></h2>
-        <div class="rearch_box">
-        	<div style="float:left;">
-        		① 그래프 내용
-        		<div style="border:1px solid red; width:50%; height: 10px;"></div>
-        	</div>
-        	<div>
-        		① 그래프 내용
-        	</div>
-        	<div>
-        		① 그래프 내용
-        	</div>
-        	<div>
-        		① 그래프 내용
-        	</div>
-        	<div>
-        		① 그래프 내용
-        	</div>
-        </div>
-        
-    </div>
+  	<c:forEach var="list" items="${list}" varStatus="i">
+	    <div class="pop_list" style="overflow:hidden;">
+	    	<h2>${i.index+1}. ${list.surq_title} <span class="rearch_end">투표종료</span></h2>
+		        <div class="rearch_box">
+		        	<ul style="width: 400px; margin-top:5px;">
+		        		<li>
+		        			①
+		        		</li>
+		        		<li style="width: 50%; margin: 0 50px 0 5px;">
+		        			<div style="border:1px solid yellow; background-color:yellow; height:13px; width:${list.percent1}%;"></div>
+		        		</li>
+		        		<li>
+		        			<span><c:out value="${list.cnt1}"/>&nbsp;&nbsp;</span> <span>①</span> <span>${list.suri_title1}</span>
+		        		</li>
+		        	</ul>
+		        
+		        	<ul style="width: 400px; margin-top:5px;">
+		        		<li>
+		        			②
+		        		</li>
+		        		<li style="width: 50%; margin: 0 50px 0 5px;">
+		        			<div style="border:1px solid red; background-color:red; height:13px; width:${list.percent2}%;"></div>
+		        		</li>
+		        		<li>
+		        			<span>${list.cnt2}&nbsp;&nbsp;</span> <span>②</span> <span>${list.suri_title2}</span>
+		        		</li>
+		        	</ul>
+		        	
+		        	<ul style="width: 400px; margin-top:5px;">
+		        		<li>
+		        			③
+		        		</li>
+		        		<li style="width: 50%; margin: 0 50px 0 5px;">
+		        			<div style="border:1px solid blue; background-color:blue; height:13px; width:${list.percent3}%;"></div>
+		        		</li>
+		        		<li>
+		        			<span>${list.cnt3}&nbsp;&nbsp;</span> <span>③</span> <span>${list.suri_title3}</span>
+		        		</li>
+		        	</ul>
+		        	
+		        	<ul style="width: 400px; margin-top:5px;">
+		        		<li>
+		        			④
+		        		</li>
+		        		<li style="width: 50%; margin: 0 50px 0 5px;">
+		        			<div style="border:1px solid green; background-color:green; height:13px; width:${list.percent4}%;"></div>
+		        		</li>
+		        		<li>
+		        			<span>${list.cnt4}&nbsp;&nbsp;</span> <span>④</span> <span>${list.suri_title4}</span>
+		        		</li>
+		        	</ul>
+		        	
+		        	<ul style="width: 400px; margin-top:5px;">
+		        		<li>
+		        			⑤
+		        		</li>
+		        		<li style="width: 50%; margin: 0 50px 0 5px;">
+		        			<div style="border:1px solid gray; background-color:gray; height:13px; width:${list.percent5}%;"></div>
+		        		</li>
+		        		<li>
+		        			<span>${list.cnt5}&nbsp;&nbsp;</span> <span>⑤</span> <span>${list.suri_title5}</span>
+		        		</li>
+		        	</ul>
+		        </div>
+		        
+		        
+	    </div>
+  	</c:forEach>
+    
 	<p class="pt20"></p>
     <div class="pop_btn">
     	<span class="blue_l"><a href="#" class="blue_r">확인</a></span>

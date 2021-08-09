@@ -38,10 +38,17 @@ doGoTab = function(thisObject, tab) {
 		});
 	});
 	
-	function openPopup(){
+	function openPopup(num){
 		var test = $("#bno").val();
-		var url = "researchPopup?sur_seq="+test;
-		var name = "결과보기";
+		var url = "";
+		var name = "";
+		if(num == 1){
+			url = "researchPopup?sur_seq="+test;
+			name = "결과보기";
+		}else{
+			url = "reasonPopup?sur_seq="+test;
+			name = "사유전체보기"
+		}
 		var option = "width = 500, height = 500, top = 200, left = 800";
 		window.open(url, name, option);
 	}
@@ -219,7 +226,7 @@ doGoTab = function(thisObject, tab) {
 	                <th>종료일</th>
 	                <td class="tl">${vo.sur_end_date}</td>
 	                <th>결과확인</th>
-	                <td class="tl"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></td>
+	                <td class="tl"><a href="#" onclick="openPopup(1); return false;"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
 	              </tr>
 	              <tr>
 	                <th>문항수</th>
@@ -260,12 +267,12 @@ doGoTab = function(thisObject, tab) {
 	          <!-- btn--> 
 	          <span class="bbs_btn"> 
 	
-	          <span class="wte_l"><a href="#" class="wte_r">목록</a></span>
-	          <span class="wte_l"><a href="#" class="wte_r">수정</a></span>
-	          <span class="wte_l"><a href="#" class="wte_r">삭제</a></span>
+	          <span class="wte_l"><a href="researchList" class="wte_r">목록</a></span>
+	          <span class="wte_l"><a href="researchEdit?sur_seq=${vo.sur_seq}" class="wte_r">수정</a></span>
+	          <span class="wte_l"><a href="researchDel?sur_seq=${vo.sur_seq}" class="wte_r">삭제</a></span>
 	          <span class="per_l"><a href="#" id="responseSubmit" onclick="return false;" class="pre_r">참여하기</a></span>
-	          <span class="per_l"><a href="#" onclick="openPopup(); return false;" class="pre_r">결과보기</a></span>
-	          <span class="wte_l"><a href="#" class="wte_r">사유전체보기</a></span>
+<!-- 	          <span class="per_l"><a href="#" onclick="openPopup(); return false;" class="pre_r">결과보기</a></span> -->
+	          <span class="wte_l"><a href="#" onclick="openPopup(2); return false;" class="wte_r">사유전체보기</a></span>
 				
 	          </span> 
 	          <!-- //btn--> 

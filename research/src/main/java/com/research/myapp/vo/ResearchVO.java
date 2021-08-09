@@ -36,6 +36,18 @@ public class ResearchVO {
 	private int suri_num;
 	private String description;
 	
+	private int cnt1;
+	private int cnt2;
+	private int cnt3;
+	private int cnt4;
+	private int cnt5;
+	
+	private int percent1;
+	private int percent2;
+	private int percent3;
+	private int percent4;
+	private int percent5;
+	
 	private List<ResearchVO> voList;
 	
 	public int getSur_seq() {
@@ -181,5 +193,71 @@ public class ResearchVO {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	
+	
+	
+	
+	
+	public int getCnt1() {
+		return cnt1;
+	}
+	public void setCnt1(int cnt1) {
+		this.cnt1 = cnt1;
+	}
+	public int getCnt2() {
+		return cnt2;
+	}
+	public void setCnt2(int cnt2) {
+		this.cnt2 = cnt2;
+	}
+	public int getCnt3() {
+		return cnt3;
+	}
+	public void setCnt3(int cnt3) {
+		this.cnt3 = cnt3;
+	}
+	public int getCnt4() {
+		return cnt4;
+	}
+	public void setCnt4(int cnt4) {
+		this.cnt4 = cnt4;
+	}
+	public int getCnt5() {
+		return cnt5;
+	}
+	public void setCnt5(int cnt5) {
+		this.cnt5 = cnt5;
+	}
+	public int getPercent1() {
+		return percent1;
+	}
+	public void setPercent1(int percent1) {
+		this.percent1 = percent1;
+	}
+	public int getPercent2() {
+		return percent2;
+	}
+	public void setPercent2(int percent2) {
+		this.percent2 = percent2;
+	}
+	public int getPercent3() {
+		return percent3;
+	}
+	public void setPercent3(int percent3) {
+		this.percent3 = percent3;
+	}
+	public int getPercent4() {
+		return percent4;
+	}
+	public void setPercent4(int percent4) {
+		this.percent4 = percent4;
+	}
+	public int getPercent5() {
+		return percent5;
+	}
+	public void setPercent5(int percent5) {
+		this.percent5 = percent5;
 	}
 }

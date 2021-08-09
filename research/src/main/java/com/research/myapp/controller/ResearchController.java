@@ -1,5 +1,10 @@
 package com.research.myapp.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +105,7 @@ public class ResearchController {
 		return mav;
 	}
 	
+	//답변 등록
 	@RequestMapping(value="/researchResponse", method = RequestMethod.POST)
 	public ModelAndView researchResponse(ResearchVO vo) {
 		ModelAndView mav = new ModelAndView();
@@ -122,11 +128,79 @@ public class ResearchController {
 		return mav;
 	}
 	
+	//결과보기 
 	@RequestMapping("/researchPopup")
 	public ModelAndView researchPopup(int sur_seq) {
 		ModelAndView mav = new ModelAndView();
-		
+		// surq_seq + 제목 + 문항 가져오기
+		List<ResearchVO> list = new ArrayList<ResearchVO>();
+		list.addAll(rService.getTitleAndQs(sur_seq));
+//		System.out.println(list.get(0).getSurq_title()+"!@#!#!#!@#@!#@!");
+		HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+		int count = 0;
+		double percent = 0;
+		for(int i=0;i<list.size();i++) {
+			List<Integer> num = new ArrayList<Integer>();
+			int totalCount = rService.getTotalCount(list.get(i).getSurq_seq()); // 해당 문항번호의 총 답변 수
+			//첫번째 문항 카운트 가져오기
+			for(int j=1; j<=5; j++) {
+				count = rService.getQuesCount(j, list.get(i).getSurq_seq());
+				percent = (double)((double)count / (double)totalCount) * 100;
+				
+				switch(j) {
+				case 1:
+					list.get(i).setCnt1(count);
+					list.get(i).setPercent1((int)percent);
+					break;
+				case 2:
+					list.get(i).setCnt2(count);
+					list.get(i).setPercent2((int)percent);
+					break;
+				case 3:
+					list.get(i).setCnt3(count);
+					list.get(i).setPercent3((int)percent);
+					break;
+				case 4:
+					list.get(i).setCnt4(count);
+					list.get(i).setPercent4((int)percent);
+					break;
+				case 5:
+					list.get(i).setCnt5(count);
+					list.get(i).setPercent5((int)percent);
+					break;
+				}
+			}
+		}
+		mav.addObject("list", list);
 		mav.setViewName("/research/researchPopup");
+		return mav;
+	}
+	
+	//사유전체보기
+	@RequestMapping("/reasonPopup")
+	public ModelAndView reasonPopup(int sur_seq) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/research/researchChoiceReasonPopup");
+		return mav;
+	}
+	
+	//수정
+	@RequestMapping("/researchEdit")
+	public ModelAndView researchEdit(int sur_seq) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(sur_seq);
+		mav.addObject("vo", rService.getRecord(sur_seq));
+		mav.addObject("qs", rService.getQuestions(sur_seq));
+		mav.setViewName("/research/researchEdit");
+		return mav;
+	}
+	//설문조사 업데이트
+	//삭제
+	@RequestMapping("/researchDel")
+	public ModelAndView researchDel(int sur_seq) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(sur_seq);
+		mav.setViewName("/research/researchList");
 		return mav;
 	}
 }

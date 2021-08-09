@@ -31,6 +31,9 @@ doGoTab = function(thisObject, tab) {
 };
 
 	$(function(){
+		//등록 날짜로 세팅하기
+		$("#startdate").val('${vo.sur_sat_date}');
+		$("#enddate").val('${vo.sur_end_date}');
 		//시작날짜가 오늘날짜보다 이전일수없게 세팅		
 		var today = new Date();
 		var year = today.getFullYear();
@@ -252,7 +255,7 @@ doGoTab = function(thisObject, tab) {
 	            <tbody>
 	              <tr>
 	                <th>제목</th>
-	                <td colspan="5" class="tl"><input type="text" id="aa" name="sur_title" class="inp" /></td>
+	                <td colspan="5" class="tl"><input type="text" id="aa" name="sur_title" class="inp" value="${vo.sur_title}"/></td>
 	                </tr>
 	              <tr>
 	                <th>시작일</th>
