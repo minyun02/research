@@ -36,6 +36,7 @@ doGoTab = function(thisObject, tab) {
 		var year = today.getFullYear();
 		var month = today.getMonth()+1;
 		var date = today.getDate();
+		
 		if(month<10){
 			month ='0'+month;
 		}
@@ -47,23 +48,32 @@ doGoTab = function(thisObject, tab) {
 		$(document).on('change','#startdate', function(){
 			$("#enddate").attr('min', $("#startdate").val());
 		});
+
+		//시작일이 없으면 종료일 선택 불가
+		$(document).on('click', '#enddate',function(){
+			if($("#startdate").val() == ''){
+				alert("시작일을 먼저 선택해주세요.")
+				$("#startdate").focus();
+			}
+		})
 		
 		//문항수 늘리기
 		$(document).on('click','#plus', function(){
 			var num = parseInt($("#numOfQs").text());
 			var text = '<div class="research '+(num+1)+'">';
-			text += '<p>'+(num+1)+'.&nbsp;&nbsp;<input type="text" id="aa" name="voList['+(num)+'].surq_title" class="inp"  title="1. 위생불량 납품단절 편함" /></p>';
+			var titleNum = 6;
+			text += '<p>'+(num+1)+'.&nbsp;&nbsp;<input type="text" id="aa" name="voList['+(num)+'].surq_title" class="inp rTitle" required/>*<span>0/100</span></p>';
             text += '<ul>';
-            text += '<li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title1" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title2" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title3" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title4"class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title5" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>선택사유 <input type="text" id="aa" name="voList['+(num)+'].suri_reason" class="inp" style="width:650px;" /></li>';
+            text += '<li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title1" class="inp suriTitle" required/>*<span>0/10</span></li>';
+            text += '<li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title2" class="inp suriTitle" required/>*<span>0/10</span></li>';
+            text += '<li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title3" class="inp suriTitle"/><span>0/10</span></li>';
+            text += '<li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title4"class="inp suriTitle"/><span>0/10</span></li>';
+            text += '<li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title5" class="inp suriTitle"/><span>0/10</span></li>';
+            text += '<li>선택사유 <input type="text" id="aa" name="voList['+(num)+'].suri_reason" class="inp" style="width:615px;" disabled/><span></span></li>';
             text += '</ul></div>';
 			$("#questions").append(text);
 			$("#numOfQs").text(num+1);
-			console.log(typeof num)
+			console.log(num)
 			$("#que_cnt").val(parseInt(num+1));
 		})
 		
@@ -80,10 +90,39 @@ doGoTab = function(thisObject, tab) {
 			}
 		});
 		
-		//submit
-		$(document).on('click','.pre_r', function(){
-			$("#createForm").submit();
+		//글자수 보여주기
+		$(document).on('input','.rTitle', function(){
+			var wordCnt = $(this).val().length;
+			$(this).next().text(wordCnt+"/100");
+			if(wordCnt>100){
+				alert("100자 이상을 입력할 수 없습니다.")
+				$(this).val($(this).val().substr(0, 100));
+				$(this).next().text("100/100");
+			}
+			if($(this).val().trim() == "" && $(this).val().length > 0){
+				alert("공백으로 문장을 시작할 수 없습니다. 다시 입력해주세요.")
+				$(this).val('');
+			}
 		})
+		
+		$(document).on('input','.suriTitle', function(){
+			var wordCnt = $(this).val().length;
+			$(this).next().text(wordCnt+"/10");
+			if(wordCnt>10){
+				alert("10자 이상을 입력할 수 없습니다.")
+				$(this).val($(this).val().substr(0, 10));
+				$(this).next().text("10/10");
+			}
+			if($(this).val().trim() == "" && $(this).val().length > 0){
+				alert("공백으로 문장을 시작할 수 없습니다. 다시 입력해주세요.")
+				$(this).val('');
+			}
+		})
+		
+		//submit
+// 		$(document).on('click','.pre_r', function(){
+// 			$("#createForm").submit();
+// 		})
 		
 	});
 </script>
@@ -190,7 +229,7 @@ doGoTab = function(thisObject, tab) {
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part02Off.gif" alt="영양(교)사이야기" /></a></li>
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part03Off.gif" alt="조리(원)사이야기" /></a></li>
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="자유게시판" /></a></li>
-                <li class="last subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="설문조사" /></a></li>
+                <li class="last subMenu"><a href="researchList"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="설문조사" /></a></li>
                 <li class="right_bg"></li>
               </ul>
             </div>
@@ -227,7 +266,7 @@ doGoTab = function(thisObject, tab) {
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_02Off.gif" alt="영양(교)사이야기" /></a></li>
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_03Off.gif" alt="조리(원)사이야기" /></a></li>
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_04Off.gif" alt="자유게시판" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
+        <li><a href="researchList"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
       </ul>
       <div class="right_box">
         <h3><img src="${pageContext.request.contextPath}/images/sub/particiation/title_04.gif" alt="급식기구관리전환" /></h3>
@@ -236,7 +275,7 @@ doGoTab = function(thisObject, tab) {
         
        
         <div class="tbl_box">
-	        <form action="researchCreateOk" method="post" enctype="multipart/form-data" id="createForm">
+	        <form action="researchCreateOk" method="post" enctype="multipart/form-data" id="createForm" >
 	          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl_type01" summary="설문조사">
 	            <caption>
 	            설문조사
@@ -252,13 +291,16 @@ doGoTab = function(thisObject, tab) {
 	            <tbody>
 	              <tr>
 	                <th>제목</th>
-	                <td colspan="5" class="tl"><input type="text" id="aa" name="sur_title" class="inp" /></td>
+	                <td colspan="5" class="tl">
+	                	<input type="text" id="aa" name="sur_title" class="inp rTitle" required/>
+	                	<span id="subjectWord">0/100</span>
+	                </td>
 	                </tr>
 	              <tr>
 	                <th>시작일</th>
-	                <td class="tl"><input type="date" id="startdate" name="sur_sat_date" class="inp" style="width:130px;" /></td>
+	                <td class="tl"><input type="date" id="startdate" name="sur_sat_date" class="inp" style="width:130px;" required/></td>
 	                <th>종료일</th>
-	                <td class="tl"><input type="date" id="enddate" name="sur_end_date" class="inp" style="width:130px;" /></td>
+	                <td class="tl"><input type="date" id="enddate" name="sur_end_date" class="inp" style="width:130px;" required/></td>
 	                <th style="background-color:white;"></th>
 	                <td class="tl" style="width:100px;"></td>
 	              </tr>
@@ -273,14 +315,14 @@ doGoTab = function(thisObject, tab) {
 	              <tr>
 	               <td colspan="6" class="tl" id="questions">
 	               	   <div class="research">
-	                       <p>1.&nbsp;&nbsp;<input type="text" id="aa" name="voList[0].surq_title" class="inp"  title="1. 위생불량 납품단절 편함" /></p>
+	                       <p>1.&nbsp;&nbsp;<input type="text" id="aa" name="voList[0].surq_title" class="inp rTitle"  title="1. 위생불량 납품단절 편함" required/>*<span id="qTitle">0/100</span></p>
 	                        <ul>
-	                        <li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList[0].suri_title1" class="inp"  title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList[0].suri_title2" class="inp"  title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList[0].suri_title3" class="inp"  title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList[0].suri_title4" class="inp" title="매우그렇다" /></li>
-	                        <li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList[0].suri_title5" class="inp"  title="매우그렇다" /></li>
-	                        <li>선택사유 <input type="text" id="aa" name="voList[0].suri_reason" class="inp" style="width:650px;" /> </li>
+	                        <li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList[0].suri_title1" class="inp suriTitle"  title="매우그렇다" required/>*<span id="firstTitle">0/10</span></li>
+	                        <li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList[0].suri_title2" class="inp suriTitle"  title="매우그렇다" required/>*<span id="secondTitle">0/10</span></li>
+	                        <li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList[0].suri_title3" class="inp suriTitle"  title="매우그렇다" /><span id="thirdTitle">0/10</span></li>
+	                        <li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList[0].suri_title4" class="inp suriTitle" title="매우그렇다" /><span id="fourthTitle">0/10</span></li>
+	                        <li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList[0].suri_title5" class="inp suriTitle"  title="매우그렇다" /><span id="fifthTitle">0/10</span></li>
+	                        <li>선택사유 <input type="text" id="aa" name="voList[0].suri_reason" class="inp" style="width:615px;" disabled/><span id="reason"></span> </li>
 	                        </ul>
 						</div>
 	               </td>
@@ -299,7 +341,8 @@ doGoTab = function(thisObject, tab) {
 	          <span class="bbs_btn"> 
 	
 	          <span class="wte_l"><a href="researchList" class="wte_r">목록</a></span>
-	          <span class="per_l"><a href="#" onclick="return false;" class="pre_r">등록</a></span>
+<!-- 	          <span class="per_l"><a href="#" onclick="return false;" class="pre_r">등록</a></span> -->
+	          <span class="per_l"><input type="submit" class="pre_r" style="border:none;"/></span>
 <!-- 	          <span class="wte_l"><a href="#" onclick="return false;" class="wte_r">취소</a></span> -->
 	
 	          </span> 

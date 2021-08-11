@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.research.myapp.dao.ResearchDAO;
+import com.research.myapp.vo.PagingVO;
 import com.research.myapp.vo.ResearchVO;
 
 
@@ -34,9 +35,9 @@ public class ResearchServiceImp implements ResearchService {
 	}
 
 	@Override
-	public List<ResearchVO> getList() {
+	public List<ResearchVO> getList(PagingVO pvo) {
 		// 목록 가져오기
-		return dao.getList();
+		return dao.getList(pvo);
 	}
 
 	@Override
@@ -73,6 +74,48 @@ public class ResearchServiceImp implements ResearchService {
 	public int getTotalCount(int surq_seq) {
 		// total 답변수
 		return dao.getTotalCount(surq_seq);
+	}
+
+	@Override
+	public int getTotalRecord(PagingVO pvo) {
+		// 페이징용 total record
+		return dao.getTotalRecord(pvo);
+	}
+
+	@Override
+	public int delRSR(int sur_seq) {
+		// 답변 삭제
+		return dao.delRSR(sur_seq);
+	}
+
+	@Override
+	public int detRSI(int sur_seq) {
+		// rsi 삭제
+		return dao.detRSI(sur_seq);
+	}
+
+	@Override
+	public int delRSQ(int sur_seq) {
+		// TODO Auto-generated method stub
+		return dao.delRSQ(sur_seq);
+	}
+
+	@Override
+	public int delRS(int sur_seq) {
+		// TODO Auto-generated method stub
+		return dao.delRS(sur_seq);
+	}
+
+	@Override
+	public int checkUserid(String user_id) {
+		// userid check
+		return dao.checkUserid(user_id);
+	}
+
+	@Override
+	public int checkPassword(String user_id, String password) {
+		// password check
+		return dao.checkPassword(user_id, password);
 	}
 
 }

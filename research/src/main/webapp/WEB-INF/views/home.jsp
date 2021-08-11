@@ -187,7 +187,7 @@ doGoTab = function(thisObject, tab) {
       <ul>
         <li class="bn"><a href="#">HOME</a></li>
         <li><a href="#">SITEMAP</a></li>
-        <li class="bn"> <a href="#"><img src="images/header/common/btn_login.gif" alt="로그인" /></a></li>
+        <li class="bn"> <a href="login"><img src="images/header/common/btn_login.gif" alt="로그인" /></a></li>
       </ul>
     </div>
     <div id="gnb">

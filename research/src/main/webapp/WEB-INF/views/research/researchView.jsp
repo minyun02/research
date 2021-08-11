@@ -33,7 +33,7 @@ doGoTab = function(thisObject, tab) {
 	$(function(){
 		//답변등록하기
 		$(document).on('click','#responseSubmit',function(){
-			alert("??")
+			alert("참여가 완료되었습니다. 감사합니다.")
 			$("#responseForm").submit();
 		});
 	});
@@ -71,7 +71,7 @@ doGoTab = function(thisObject, tab) {
       <ul>
         <li class="bn"><a href="#">HOME</a></li>
         <li><a href="#">SITEMAP</a></li>
-        <li class="bn"> <a href="#"><img src="${pageContext.request.contextPath}/images/header/common/btn_login.gif" alt="로그인" /></a></li>
+        <li class="bn"> <a href="login"><img src="${pageContext.request.contextPath}/images/header/common/btn_login.gif" alt="로그인" /></a></li>
       </ul>
     </div>
     <div id="gnb">
@@ -156,7 +156,7 @@ doGoTab = function(thisObject, tab) {
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part02Off.gif" alt="영양(교)사이야기" /></a></li>
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part03Off.gif" alt="조리(원)사이야기" /></a></li>
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="자유게시판" /></a></li>
-                <li class="last subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="설문조사" /></a></li>
+                <li class="last subMenu"><a href="researchList"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="설문조사" /></a></li>
                 <li class="right_bg"></li>
               </ul>
             </div>
@@ -193,7 +193,7 @@ doGoTab = function(thisObject, tab) {
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_02Off.gif" alt="영양(교)사이야기" /></a></li>
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_03Off.gif" alt="조리(원)사이야기" /></a></li>
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_04Off.gif" alt="자유게시판" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
+        <li><a href="researchList"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
       </ul>
       
       <form action="researchResponse" method="post" id="responseForm">
@@ -248,7 +248,7 @@ doGoTab = function(thisObject, tab) {
 		                        <li><input type="radio" name="voList[${i.index}].suri_num" value="3"/>&nbsp;&nbsp; ③ ${q.suri_title3}</li>
 		                        <li><input type="radio" name="voList[${i.index}].suri_num" value="4"/>&nbsp;&nbsp; ④ ${q.suri_title4}</li>
 		                        <li><input type="radio" name="voList[${i.index}].suri_num" value="5"/>&nbsp;&nbsp; ⑤ ${q.suri_title5}</li>
-		                        <li>선택사유 <input type="text" id="aa" name="voList[${i.index}].description" class="inp" style="width:200px;" /> </li>
+		                        <li>선택사유 <input type="text" id="aa" name="voList[${i.index}].description" class="inp" style="width:200px;"/> </li>
 		                        </ul>
 							</div>
 						</c:forEach>
@@ -272,8 +272,7 @@ doGoTab = function(thisObject, tab) {
 	          <span class="wte_l"><a href="researchDel?sur_seq=${vo.sur_seq}" class="wte_r">삭제</a></span>
 	          <span class="per_l"><a href="#" id="responseSubmit" onclick="return false;" class="pre_r">참여하기</a></span>
 <!-- 	          <span class="per_l"><a href="#" onclick="openPopup(); return false;" class="pre_r">결과보기</a></span> -->
-	          <span class="wte_l"><a href="#" onclick="openPopup(2); return false;" class="wte_r">사유전체보기</a></span>
-				
+<!-- 	          <span class="wte_l"><a href="#" onclick="openPopup(2); return false;" class="wte_r">사유전체보기</a></span> -->
 	          </span> 
 	          <!-- //btn--> 
 	          

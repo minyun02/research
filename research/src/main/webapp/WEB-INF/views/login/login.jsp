@@ -9,85 +9,24 @@
 <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript">
-initPage = function() {
-	
-};
-
-doGoTab = function(thisObject, tab) {
-	$(".business_tab").find(">li>a").each(function(index, el) {
-		$(el).removeClass("business_tab0"+(index+1)+"_on");
-		$(el).addClass("business_tab0"+(index+1));
-	});
-	$(thisObject).addClass("business_tab"+tab+"_on");
-	if("01"==tab){
-		$("#tab02").hide();
-		$("#tab01").show();
-	}else{
-		$("#tab01").hide();
-		$("#tab02").show();
-	}
-	
-};
-
+<script>
 	$(function(){
-		//등록 날짜로 세팅하기
-		$("#startdate").val('${vo.sur_sat_date}');
-		$("#enddate").val('${vo.sur_end_date}');
-		//시작날짜가 오늘날짜보다 이전일수없게 세팅		
-		var today = new Date();
-		var year = today.getFullYear();
-		var month = today.getMonth()+1;
-		var date = today.getDate();
-		if(month<10){
-			month ='0'+month;
-		}
-		if(date<10){
-			date = '0'+date;
-		}
-		$("#startdate").attr('min', year+'-'+month+'-'+date)
-		//종료일이 시작날짜보다 뒤일수없게 세팅
-		$(document).on('change','#startdate', function(){
-			$("#enddate").attr('min', $("#startdate").val());
+		$("#loginGo").click(function(){
+			var userid = $("#userid").val();
+			$.ajax({
+				url : "/myapp/useridCheck",
+				data : "user_id="+userid,
+				success: function(result){
+					if(result==true){ //true
+						location.href = "loginPassword?user_id="+userid;
+					}else{ //false
+						alert("등록되지 않은 아이디입니다. 다시 시도해주세요.");
+					}
+				},error : function(){
+					console.log("?")
+				}
+			})
 		});
-		
-		//문항수 늘리기
-		$(document).on('click','#plus', function(){
-			var num = parseInt($("#numOfQs").text());
-			var text = '<div class="research '+(num+1)+'">';
-			text += '<p>'+(num+1)+'.&nbsp;&nbsp;<input type="text" id="aa" name="voList['+(num)+'].surq_title" class="inp"  title="1. 위생불량 납품단절 편함" /></p>';
-            text += '<ul>';
-            text += '<li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title1" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title2" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title3" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title4"class="inp"  title="매우그렇다" /></li>';
-            text += '<li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList['+(num)+'].suri_title5" class="inp"  title="매우그렇다" /></li>';
-            text += '<li>선택사유 <input type="text" id="aa" name="voList['+(num)+'].suri_reason" class="inp" style="width:650px;" /></li>';
-            text += '</ul></div>';
-			$("#questions").append(text);
-			$("#numOfQs").text(num+1);
-			console.log(typeof num)
-			$("#que_cnt").val(parseInt(num+1));
-		})
-		
-		// 문항수 줄이기
-		$(document).on('click','#minus', function(){
-			var num = parseInt($('#numOfQs').text());
-			var obj = "."+num;
-			if(num == 1){
-				alert("문항수는 1개 이상.")
-			}else{
-				$(obj).remove();
-				$("#numOfQs").text(num-1);
-				$("#que_cnt").val(parseInt(num-1));
-			}
-		});
-		
-		//submit
-		$(document).on('click','.pre_r', function(){
-			$("#createForm").submit();
-		})
-		
 	});
 </script>
 </head>
@@ -103,7 +42,7 @@ doGoTab = function(thisObject, tab) {
   
   <!-- header-->
   <div id="header">
-    <h1><a href="researchList"><img src="${pageContext.request.contextPath}/images/header/common/logo.gif" alt="서울학교급식포털" /></a></h1>
+    <h1><img src="${pageContext.request.contextPath}/images/header/common/logo.gif" alt="서울학교급식포털" /></h1>
     <div class="topmenu">
       <ul>
         <li class="bn"><a href="#">HOME</a></li>
@@ -184,7 +123,7 @@ doGoTab = function(thisObject, tab) {
             </div>
           </div>
         </li>
-        <li class="mainMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/mm_partOff.gif" alt="알림마당" /></a>
+        <li class="mainMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/mm_partOff.gif" alt="참여마당" /></a>
           <div class="subMenu" id="sub06" style="display:none;">
             <div class="boxSR">
               <ul class="boxSM">
@@ -199,7 +138,7 @@ doGoTab = function(thisObject, tab) {
             </div>
           </div>
         </li>
-        <li class="mainMenu last"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/mm_noticeOff.gif" alt="정보마당" /></a>
+        <li class="mainMenu last"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/mm_noticeOff.gif" alt="알림마당" /></a>
           <div class="subMenu" id="sub07" style="display:none;">
             <div class="boxSR">
               <ul class="boxSM">
@@ -224,93 +163,46 @@ doGoTab = function(thisObject, tab) {
     <div id="contents">
       <h2>메인내용</h2>
       <p><img src="${pageContext.request.contextPath}/images/sub/info/sub_vimg_01.jpg" alt="건강한 급식 행복한 학교" /></p>
-      <ul class="lnb">
-        <li><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_title_01.gif" alt="알림마당" /></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_01Off.gif" alt="학교급식인력풀" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_02Off.gif" alt="영양(교)사이야기" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_03Off.gif" alt="조리(원)사이야기" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_04Off.gif" alt="자유게시판" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
+       <ul class="lnb">
+        <li><img src="${pageContext.request.contextPath}/images/sub/etc/sub_title_01.gif" alt="정보마당" /></li>
+        <li><a href="login"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_01Off.gif" alt="로그인" /></a></li>
+        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_02Off.gif" alt="본인확인" /></a></li>
+        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_03Off.gif" alt="관련기관링크" /></a></li>
+        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_04On.gif" alt="개인보호정책" /></a></li>
+        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_05Off.gif" alt="이메일무단수집거부" /></a></li>
+        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_06Off.gif" alt="저작권보호" /></a></li>
+         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_07Off.gif" alt="뷰어프로그램" /></a></li>
+         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_08Off.gif" alt="팝업관리" /></a></li>
+         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/sub_stitle_09Off.gif" alt="사이트맵" /></a></li>
       </ul>
       <div class="right_box">
-        <h3><img src="${pageContext.request.contextPath}/images/sub/particiation/title_04.gif" alt="급식기구관리전환" /></h3>
-        <p class="history"><img src="${pageContext.request.contextPath}/images/sub/history_home.gif" alt="home" /> 알림마당 <img src="${pageContext.request.contextPath}/images/sub/history_arrow.gif" alt="다음" /> <strong>설문조사</strong></p>
+        <h3><img src="${pageContext.request.contextPath}/images/sub/etc/title_01.gif" alt="로그인" /></h3>
+        <p class="history"><img src="${pageContext.request.contextPath}/images/sub/history_home.gif" alt="home" /> 기타 <img src="${pageContext.request.contextPath}/images/sub/history_arrow.gif" alt="다음" /> <strong>로그인</strong></p>
         <p class="pt30"></p>
-        
        
-        <div class="tbl_box">
-	        <form action="researchCreateOk" method="post" enctype="multipart/form-data" id="createForm">
-	          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl_type01" summary="설문조사">
-	            <caption>
-	            설문조사
-	            </caption>
-	            <colgroup>
-	            <col width="15%"/>
-	            <col width="20%"/>
-	            <col width="15%"/>
-	            <col width="20%"/>
-	            <col width="15%"/>
-	            <col width="%"/>
-	            </colgroup>
-	            <tbody>
-	              <tr>
-	                <th>제목</th>
-	                <td colspan="5" class="tl"><input type="text" id="aa" name="sur_title" class="inp" value="${vo.sur_title}"/></td>
-	                </tr>
-	              <tr>
-	                <th>시작일</th>
-	                <td class="tl"><input type="date" id="startdate" name="sur_sat_date" class="inp" style="width:130px;" /></td>
-	                <th>종료일</th>
-	                <td class="tl"><input type="date" id="enddate" name="sur_end_date" class="inp" style="width:130px;" /></td>
-	                <th style="background-color:white;"></th>
-	                <td class="tl" style="width:100px;"></td>
-	              </tr>
-	              <tr>
-	                <th>문항수</th>
-	                <td colspan="5" class="tl">
-	                	<button id="minus" type="button">-</button>
-	                	<span id="numOfQs" style="margin: 0 10px">${vo.que_cnt}</span><input id="que_cnt" type="hidden" name="que_cnt" value="${vo.que_cnt}"/>
-	                	<button id="plus" type="button">+</button>
-	                </td>
-	                </tr>
-	              <tr>
-	               <td colspan="6" class="tl" id="questions">
-	               		<c:forEach var="q" items="${qs}" varStatus="i">
-		               	   <div class="research">
-		                       <p>${i.index+1}.&nbsp;&nbsp;<input type="text" id="aa" name="voList[0].surq_title" class="inp"  value="${q.surq_title}" title="${i.index+1}. ${q.surq_title}"/></p>
-		                        <ul>
-		                        <li>&nbsp;&nbsp;①&nbsp;<input type="text" id="aa" name="voList[0].suri_title1" class="inp"  value="${q.suri_title1}" /></li>
-		                        <li>&nbsp;&nbsp;②&nbsp;<input type="text" id="aa" name="voList[0].suri_title2" class="inp"  value="${q.suri_title2}" /></li>
-		                        <li>&nbsp;&nbsp;③&nbsp;<input type="text" id="aa" name="voList[0].suri_title3" class="inp"  value="${q.suri_title3}" /></li>
-		                        <li>&nbsp;&nbsp;④&nbsp;<input type="text" id="aa" name="voList[0].suri_title4" class="inp" value="${q.suri_title4}" /></li>
-		                        <li>&nbsp;&nbsp;⑤&nbsp;<input type="text" id="aa" name="voList[0].suri_title5" class="inp"  value="${q.suri_title5}" /></li>
-		                        <li>선택사유 <input type="text" id="aa" name="voList[0].suri_reason" class="inp" style="width:650px;" disabled/> </li>
-		                        </ul>
-							</div>
-						</c:forEach>
-	               </td>
-	              </tr>
-	              <tr>
-	               <th>첨부파일</th>
-	               <td colspan="5" class="tl">
-	               		<input type="file" id="aa" name="aa" />
-	               </td>
-	              </tr>
-	            </tbody>
-	          </table>
-	          
-	          <p class="pt40"></p>
-	          <!-- btn--> 
-	          <span class="bbs_btn"> 
-	
-	          <span class="wte_l"><a href="researchList" class="wte_r">목록</a></span>
-	          <span class="per_l"><a href="#" onclick="return false;" class="pre_r">등록</a></span>
-<!-- 	          <span class="wte_l"><a href="#" onclick="return false;" class="wte_r">취소</a></span> -->
-	
-	          </span> 
-	          <!-- //btn--> 
-          </form>
-        </div>
+       <!-- login-->
+       	<fieldset>
+        	<legend>로그인</legend>
+        	<form action="useridCheck" method="post" id="loginForm">
+	        	<div class="login">            
+	            	<h4><img src="${pageContext.request.contextPath}/images/sub/etc/login_img_01.gif" alt="아이디를 입력하세요" /></h4>
+	                <dl>
+	                	<dt>아이디</dt>
+	                    <dd><input type="text" class="inp" name="user_id" id="userid" style="width:180px;" /> <a href="#" onclick="return false;" id="loginGo"><img src="${pageContext.request.contextPath}/images/sub/etc/login_btn.gif" alt="로그인" /></a> <a href="#"><img src="${pageContext.request.contextPath}/images/sub/etc/login_btn_01.gif" alt="사용자등록" /></a></dd>
+	                </dl>
+	                
+	                <ul class="login_text">
+	                	<li>학생, 학부모, 시민은 별도의 회원가입 없이 본인확인(아이핀인증 또는 실명인증)만으로 <br />서비스 이용이 가능합니다. (사용자 등록 불가)</li>
+	                    <li>서울특별시교육청(학교 포함) 소속 교직원은 나이스 아이디와 인증서로 로그인을 하시기 바랍니다.<br />
+							<span class="f_eb7c10">※ 로그인이 되지 않을 경우, 서울시교육청 홈페이지에서 먼저 사용자 등록을 하시기 바랍니다.</span>
+						</li>
+	                </ul>
+	            </div>	
+        	</form>
+        </fieldset>
+       
+       <!-- //login--> 
+        
       </div>
       
       <p class="bottom_bg"></p>

@@ -17,17 +17,20 @@
 		values(surq_seq.nextval, ${sur_seq}, #{surq_title}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
 	</insert>
 	<insert id="researchInfoInsert" parameterType="ResearchVO">
-		insert into tb_06_rsi(SURI_SEQ, SUR_SEQ, SURQ_SEQ, SURI_TITLE1, SURI_TITLE2, SURI_TITLE3, SURI_TITLE4, SURI_TITLE5, SURI_REASON, WRITER, REG_NAME, REG_DATE, UDT_NAME, UDT_DATE)
-		values(suri_seq.nextval, ${sur_seq}, ${surq_seq}, #{suri_title1}, #{suri_title2}, #{suri_title3}, #{suri_title4}, #{suri_title5}, #{suri_reason}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
+		insert into tb_06_rsi(SURI_SEQ, SUR_SEQ, SURQ_SEQ, SURI_TITLE1, SURI_TITLE2, SURI_TITLE3, SURI_TITLE4, SURI_TITLE5, WRITER, REG_NAME, REG_DATE, UDT_NAME, UDT_DATE)
+		values(suri_seq.nextval, ${sur_seq}, ${surq_seq}, #{suri_title1}, #{suri_title2}, #{suri_title3}, #{suri_title4}, #{suri_title5}, #{writer}, #{reg_name}, sysdate, #{udt_name}, sysdate)
 	</insert>
 	<select id="getList" resultType="ResearchVO">
 		select * from
 		    (select * from
 		        (select * from
-		            (select sur_seq, sur_title, sur_sat_date, sur_end_date from tb_06_rs order by sur_seq desc)
-		        )
-		    where <![CDATA[rownum <=]]> 5 order by sur_seq asc)
-		where <![CDATA[rownum <=]]> 5 order by sur_seq desc
+		            (select sur_seq, sur_title, to_char(sur_sat_date) sur_sat_date, to_char(sur_end_date) sur_end_date from tb_06_rs order by sur_seq desc)
+		        <if test="searchKey != null and searchKey != '' and searchWord != null and searchWord != ''"> where ${searchKey} like '%${searchWord}%'</if>)
+		    where <![CDATA[rownum <=]]> ${currentPageNum * onePageRecord} order by sur_seq asc)
+		where <![CDATA[rownum <=]]> 
+		<if test="currentPageNum==totalPage">${lastPageRecord}</if>
+		<if test="currentPageNum!=totalPage">${onePageRecord}</if>
+		order by sur_seq desc
 	</select>
 	<select id="getRecord" resultType="ResearchVO">
 		select sur_seq, sur_title, que_cnt, to_char(sur_sat_date) sur_sat_date, to_char(sur_end_date) sur_end_date, hits, writer from tb_06_rs where sur_seq = ${param1}
@@ -52,5 +55,29 @@
 	</select>
 	<select id="getQuesCount" resultType="int">
 		select count(suri_num) from tb_06_rsr where suri_num = ${param1} and surq_seq=${param2}
+	</select>
+	<select id="getTotalRecord" parameterType="PagingVO" resultType="int">
+		select count(sur_seq) totalRecord from tb_06_rs
+		<if test="searchKey != null and searchKey != '' and searchWord != null and searchWord != ''">
+			where ${searchKey} like '%${searchWord}%'
+		</if>
+	</select>
+	<delete id="delRSR">
+		delete from tb_06_rsr where sur_seq=${param1}
+	</delete>
+	<delete id="detRSI">
+		delete from tb_06_rsi where sur_seq=${param1}
+	</delete>
+	<delete id="delRSQ">
+		delete from tb_06_rsq where sur_seq=${param1}
+	</delete>
+	<delete id="delRS">
+		delete from tb_06_rs where sur_seq=${param1}
+	</delete>
+	<select id="checkUserid" resultType="int">
+		select count(userid) from tb_member where userid=#{param1}
+	</select>
+	<select id="checkPassword" resultType="int">
+		select count(userid) from tb_member where userid=#{param1} and password=#{param2}
 	</select>
 </mapper>

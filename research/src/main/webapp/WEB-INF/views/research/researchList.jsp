@@ -8,117 +8,7 @@
 <title>서울학교급식포털</title>
 <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-
-<script type="text/javascript" >
-<!--
-
-	var flag1=true;
-	var flag2=true;
-	
-	$(document).ready(function(){
-		$(".mainMenu").each(function(index, item){
-			$(item).click(function(){
-				flag1=false;
-			});
-		});
-		
-		$(".subMenu").each(function(index, item){
-			$(item).click(function(){
-				flag1=true;
-				flag2=false;
-			});
-		});
-	});
-
-   function getElementsByClass(searchClass, node, tag) {
-     var classElements = new Array();
-     if ( node == null ) node = document;
-     if ( tag == null ) tag = '*';
-     var els = node.getElementsByTagName(tag);
-     var elsLen = els.length;
-     var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
-     for (i = 0, j = 0; i < elsLen; i++) {
-      if ( pattern.test(els[i].className) ) {
-        classElements[j] = els[i];
-        j++;
-      }
-    }
-    return classElements;
-  }
-
-  function menuHidden(menu, sub) {
-    menu.src = menu.src.replace("On", "Off");
-    sub.style.display = "none";
-  }
-
-  function setEvtGnb() {
-    var mainMenu = getElementsByClass("mainMenu");
-    var prevMenu1, prevSub1, isHid1, prevMenu2, isHid2;
-	
-	var subMenu = getElementsByClass("subMenu");
-	
-    for (var i=0; i<mainMenu.length; i++) {
-      (function (pos){
-        mainMenu[pos].getElementsByTagName("img")[0].onmouseover = function(){
-          if(prevMenu1) menuHidden(prevMenu1, prevSub1);
-          prevMenu1 = this;
-          this.src = this.src.replace("Off", "On");
-          prevSub1 = document.getElementById("sub"+("0"+(pos+1)).match(/..$/));
-          prevSub1.style.display = "block";
-        };
-    
-        mainMenu[pos].onmouseout = function(e){
-          var bool, e= e || event;
-          (function (obj, tobj) {
-            var childs = obj.childNodes;
-            for (var x=0; x<childs.length; x++) {
-              if(childs[x] == tobj) bool = true;
-              else arguments.callee(childs[x], tobj);
-            }
-          })(this, document.elementFromPoint(e.clientX, e.clientY));
-          if(flag1){
-	          if(bool) return false;
-	          menuHidden(prevMenu1, prevSub1);
-          }
-        };
-      })(i);
-    }
-	
-	for (var j=0; j<subMenu.length; j++) {
-      (function (pos){
-        subMenu[pos].getElementsByTagName("img")[0].onmouseover = function(){
-          prevMenu2 = this;
-          this.src = this.src.replace("Off", "On");
-          prevSub2 = document.getElementById("sub"+("0"+(pos+1)).match(/..$/));
-       	  flag2=true;
-        };
-    
-        subMenu[pos].onmouseout = function(e){
-          var bool, e= e || event;
-          (function (obj, tobj) {
-            var childs = obj.childNodes;
-            for (var x=0; x<childs.length; x++) {
-              if(childs[x] == tobj) bool = true;
-              else arguments.callee(childs[x], tobj);
-            }
-          })(this, document.elementFromPoint(e.clientX, e.clientY));
-          if(flag2){
-	          if(bool) return false;
-	          menuHidden(prevMenu2, prevSub2);
-          }
-        };
-      })(j);
-    }
-  }
- 
-  window.onload = function() {
-    setEvtGnb();
-  }
-//-->
-</script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 initPage = function() {
 	
@@ -139,7 +29,67 @@ doGoTab = function(thisObject, tab) {
 	}
 	
 };
+	$(function(){
+		$(".popup").click(function(){
+			var text = $(this).next().val();
+			console.log(text)
+			var url = "researchPopup?sur_seq="+text;
+			var name = "결과보기";
+			var option = "width = 500, height = 500, top = 200, left = 800";
+			window.open(url, name, option);
+		})
+		
+		$(document).on('click','.noresult', function(){
+			alert("설문조사 기간 종료 후 결과가 집계됩니다.")
+		})
+		
+		$(document).on('click','#searchBtn',function(){
+			$("#searchForm").submit();
+		});
+	});
+	function pageMove(num){
+		if(num==1){
+			//첫페이지로 이동
+			if(${page.currentPageNum == 1}){
+				alert("첫번째 페이지입니다.1")
+			}else{
+				location.href = "researchList?currenttPageNum=1<c:if test="${page.searchWord != null && page.searchWord != ''}">&searchKey=${page.searchKey}&searchWord=${page.searchWord}</c:if>"
+			}
+		}else if(num == 2){
+			//한 세트 뒤로
+			if(${page.startPageNum} == 1){
+				alert("이동할 페이지가 없습니다.2")
+			}else{
+				location.href = "researchList?currentPageNum=${page.startPageNum-1}<c:if test="${page.searchWord != null && page.searchWord != ''}">&searchKey=${page.searchKey}&searchWord=${page.searchWord}</c:if>"
+			}
+		}else if(num == 3){
+			//한 세트 앞으로
+			if(${page.totalPage} < ${page.endPage}){
+				alert("이동할 페이지가 없습니다.3")
+			}else{
+				location.href = "researchList?currentPageNum=${page.endPage+1}<c:if test="${page.searchWord != null && page.searchWord != ''}">&searchKey=${page.searchKey}&searchWord=${page.searchWord}</c:if>"
+			}
+		}else if(num ==4){
+			//끝 페이지로 이동
+			if(${page.currentPageNum} == ${page.totalPage}){
+				alert("마지막 페이지입니다.")
+			}else{
+				location.href = "researchList?currentPageNum=${page.totalPage}<c:if test="${page.searchWord != null && page.searchWord != ''}">&searchKey=${page.searchKey}&searchWord=${page.searchWord}</c:if>"
+			}
+		}
+	}
 </script>
+<style>
+	.wordcut{
+		max-width : 270px;
+		white-space: nowrap;
+		overflow-wrap: normal;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: left;
+		display: table-cell;
+	}
+</style>
 </head>
 <body>
 <div id="wrap"> 
@@ -158,7 +108,7 @@ doGoTab = function(thisObject, tab) {
       <ul>
         <li class="bn"><a href="#">HOME</a></li>
         <li><a href="#">SITEMAP</a></li>
-        <li class="bn"> <a href="#"><img src="${pageContext.request.contextPath}/images/header/common/btn_login.gif" alt="로그인" /></a></li>
+        <li class="bn"> <a href="login"><img src="${pageContext.request.contextPath}/images/header/common/btn_login.gif" alt="로그인" /></a></li>
       </ul>
     </div>
     <div id="gnb">
@@ -243,7 +193,7 @@ doGoTab = function(thisObject, tab) {
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part02Off.gif" alt="영양(교)사이야기" /></a></li>
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part03Off.gif" alt="조리(원)사이야기" /></a></li>
                 <li class="subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="자유게시판" /></a></li>
-                <li class="last subMenu"><a href="#"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="설문조사" /></a></li>
+                <li class="last subMenu"><a href="researchList"><img src="${pageContext.request.contextPath}/images/header/common/sm_part04Off.gif" alt="설문조사" /></a></li>
                 <li class="right_bg"></li>
               </ul>
             </div>
@@ -280,7 +230,7 @@ doGoTab = function(thisObject, tab) {
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_02Off.gif" alt="영양(교)사이야기" /></a></li>
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_03Off.gif" alt="조리(원)사이야기" /></a></li>
         <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_04Off.gif" alt="자유게시판" /></a></li>
-        <li><a href="#"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
+        <li><a href="researchList"><img src="${pageContext.request.contextPath}/images/sub/particiation/sub_stitle_05On.gif" alt="설문조사" /></a></li>
       </ul>
       <div class="right_box">
         <h3><img src="${pageContext.request.contextPath}/images/sub/particiation/title_04.gif" alt="급식기구관리전환" /></h3>
@@ -312,36 +262,43 @@ doGoTab = function(thisObject, tab) {
                 <th>첨부</th>
                 <th>결과확인</th>
               </tr>
+              <c:set var="num" value="${totalRecord - ((page.currentPageNum-1) * page.onePageRecord)}"/>
               <c:forEach var="vo" items="${list}">
 	              <tr>
-	                <td>10</td>
-	                <td class="tl"><a href="researchView?sur_seq=${vo.sur_seq}">${vo.sur_title}</a></td>
+	                <td>${num}</td>
+	                <td class="tl"><a href="researchView?sur_seq=${vo.sur_seq}" class="wordcut">${vo.sur_title}</a></td>
 	                <td>${vo.sur_sat_date}</td>                
 	                <td>${vo.sur_end_date }</td>
-	                <td>완료</td>
+	                <td><c:if test="${vo.sur_end_date < today}">완료</c:if><c:if test="${vo.sur_end_date >= today}">진행중</c:if></td>
 	                <td><img src="${pageContext.request.contextPath}/images/sub/btn/btn_pdf.gif" alt="pdf" /></td>
-	                <td><a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a></td>
+	                <td>
+	                	<c:if test="${vo.sur_end_date < today}"><a class="popup" href="#" onclick="return false;"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a><input type="hidden" value="${vo.sur_seq}"/></c:if>
+	                	<c:if test="${vo.sur_end_date >= today}"><a class="noresult" href="#" onclick="return false;"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_view.gif" alt="결과보기" /></a><input type="hidden" value="${vo.sur_seq}"/></c:if>
+	                </td>
 	              </tr>
+	              <c:set var="num" value="${num-1}"/>
 	          </c:forEach>
             </tbody>
           </table>
           
           <!-- paging-->
           <ul class="paging">
-            <li><a href="#" title="맨 처음 페이지로 가기"><img src="${pageContext.request.contextPath}/images/sub/btn/pre_01.gif"  alt="맨 처음 페이지로 가기" /></a></li>
-            <li><a href="#" title="이전 페이지로 가기"><img src="${pageContext.request.contextPath}/images/sub/btn/pre.gif" alt="이전 페이지로 가기" /></a></li>
-            <li><span title="현재페이지"><a href="#" class="on">1</a></span></li>
-            <li><a href="# " title="2페이지">2</a></li>
-            <li><a href="#" title="3페이지">3</a></li>
-            <li><a href="#" title="4페이지">4</a></li>
-            <li><a href="# " title="5페이지">5</a></li>
-            <li><a href="#" title="6페이지">6</a></li>
-            <li><a href="#" title="7페이지">7</a></li>
-            <li><a href="#" title="8페이지">8</a></li>
-            <li><a href="#" title="9페이지">9</a></li>
-            <li><a href="#" title="10페이지">10</a></li>
-            <li><a href="#" title="다음 페이지로 가기" ><img src="${pageContext.request.contextPath}/images/sub/btn/next.gif" alt="다음 페이지" /></a></li>
-            <li><a href="#" title="마지막 페이지로 가기"><img src="${pageContext.request.contextPath}/images/sub/btn/next_01.gif" alt="마지막 페이지" /></a></li>
+            <li><a href="#" onclick="pageMove(1); return false;" title="맨 처음 페이지로 가기"><img src="${pageContext.request.contextPath}/images/sub/btn/pre_01.gif"  alt="맨 처음 페이지로 가기" /></a></li>
+            <li><a href="#" onclick="pageMove(2); return false;" title="이전 페이지로 가기"><img src="${pageContext.request.contextPath}/images/sub/btn/pre.gif" alt="이전 페이지로 가기" /></a></li>
+            
+            <c:forEach var="p" begin="${page.startPageNum}" end="${page.startPageNum+page.onePageNum-1}">
+            	<c:if test="${p<=page.totalPage}">
+            		<c:if test="${p==page.currentPageNum}">
+		            	<li><span title="현재페이지"><a href="researchList?currentPageNum=${p}<c:if test="${page.searchWord != null && page.searchWord != ''}">&searchKey=${page.searchKey}&searchWord=${page.searchWord}</c:if>" class="on">${p}</a></span></li>
+            		</c:if>
+            		<c:if test="${p!=page.currentPageNum}">
+			            <li><a href="researchList?currentPageNum=${p}<c:if test="${page.searchWord != null && page.searchWord != ''}">&searchKey=${page.searchKey}&searchWord=${page.searchWord}</c:if>">${p}</a></li>
+            		</c:if>
+            	</c:if>
+            </c:forEach>
+            
+            <li><a href="#" onclick="pageMove(3); return false;" title="다음 페이지로 가기" ><img src="${pageContext.request.contextPath}/images/sub/btn/next.gif" alt="다음 페이지" /></a></li>
+            <li><a href="#" onclick="pageMove(4); return false;" title="마지막 페이지로 가기"><img src="${pageContext.request.contextPath}/images/sub/btn/next_01.gif" alt="마지막 페이지" /></a></li>
           </ul>
           <!-- //paging--> 
           
@@ -354,14 +311,16 @@ doGoTab = function(thisObject, tab) {
           <!-- //btn--> 
           
         </div>
-        <div class="search_box">
-          <select>
-            <option>제목</option>
-          </select>
-          <input type="text" id="serch" name="serch" />
-          <a href="#"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_serch.gif" alt="검색" /></a> </div>
-      </div>
-      
+        <form action="researchList" id="searchForm">
+ 	   		<div class="search_box">
+	         <select name="searchKey">
+	           <option value="sur_title">제목</option>
+	         </select>
+	         <input type="text" id="serch" name="searchWord" />
+	         <a href="#" id="searchBtn" onclick="return false;"><img src="${pageContext.request.contextPath}/images/sub/btn/btn_serch.gif" alt="검색" /></a>
+           </div>
+        </form>
+	     </div>
       <p class="bottom_bg"></p>
     </div>
   </div>

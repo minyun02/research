@@ -1,8 +1,9 @@
 package com.research.myapp.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.research.myapp.service.ResearchService;
+import com.research.myapp.vo.PagingVO;
 import com.research.myapp.vo.ResearchVO;
 
 @Controller
@@ -30,9 +32,21 @@ public class ResearchController {
 	private DataSourceTransactionManager tm;
 	
 	@RequestMapping("/researchList")
-	public ModelAndView researchList() {
+	public ModelAndView researchList(PagingVO pvo) {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("list", rService.getList());
+		
+		pvo.setTotalRecord(rService.getTotalRecord(pvo));
+		System.out.println(pvo.getTotalRecord());
+
+		//완료여부용 현재날짜 만들기
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String today = sdf.format(cal.getTime());
+		
+		mav.addObject("totalRecord", pvo.getTotalRecord());
+		mav.addObject("today", today);
+		mav.addObject("list", rService.getList(pvo));
+		mav.addObject("page", pvo);
 		mav.setViewName("/research/researchList");
 		return mav;
 	}
@@ -122,8 +136,8 @@ public class ResearchController {
 			mav.setViewName("redirect:researchView");
 		}else {
 			mav.addObject("flag", false);
-			mav.addObject("sur_seq", vo.getVoList().get(0).getSur_seq());
-			mav.setViewName("/research/researchView");
+//			mav.addObject("sur_seq", vo.getVoList().get(0).getSur_seq());
+			mav.setViewName("/research/researchList");
 		}
 		return mav;
 	}
@@ -171,6 +185,7 @@ public class ResearchController {
 				}
 			}
 		}
+		mav.addObject("sur_seq", sur_seq);
 		mav.addObject("list", list);
 		mav.setViewName("/research/researchPopup");
 		return mav;
@@ -199,8 +214,36 @@ public class ResearchController {
 	@RequestMapping("/researchDel")
 	public ModelAndView researchDel(int sur_seq) {
 		ModelAndView mav = new ModelAndView();
+		//답변 삭제
+		rService.delRSR(sur_seq);
+		//rsi 삭제
+		rService.detRSI(sur_seq);
+		//rsq 삭제
+		rService.delRSQ(sur_seq);
+		//rs 삭제
+		rService.delRS(sur_seq);
+		
 		System.out.println(sur_seq);
-		mav.setViewName("/research/researchList");
+		mav.setViewName("redirect:researchList");
 		return mav;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
